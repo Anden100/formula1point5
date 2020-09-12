@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+
+.flyout-enter {
+    display: block;
+    opacity: 0;
+}
+
+.flyout-enter-active {
+    display: block;
+    opacity: 1;
+    transition: opacity 300ms;
+}
+
+.flyout-exit {
+    opacity: 1;
+}
+
+.flyout-exit-active {
+    opacity: 0;
+    transition: opacity 300ms;
+}
+
+.flyout-exit-done {
+    display: none;
+}
+
+.border-white-important {
+    --border-opacity: 1;
+    border-color: #fff;
+    border-color: rgba(255, 255, 255, var(--border-opacity)) !important;
+}
+
+.header-row th:first-child {
+    @apply rounded-tl-lg;
+}
+
+.header-row th:last-child {
+    @apply rounded-tr-lg;
+}
+
+@tailwind utilities;
