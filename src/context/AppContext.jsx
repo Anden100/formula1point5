@@ -7,7 +7,7 @@ export const AppProvider = ({children}) => {
 
     useEffect(() => {
         console.log('Fetching...');
-        fetch('/2020.json').then(res => res.json()).then(d => {
+        fetch('/formula1point5/2020.json').then(res => res.json()).then(d => {
             console.log(data);
             setData(d);
         });
