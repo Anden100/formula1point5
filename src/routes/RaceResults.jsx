@@ -290,8 +290,10 @@ export default function RaceResults(props) {
                 <MobileSessionSelect className="mt-4" slug={race.slug} links={links} />
             </div>}
             {race && <div className="hidden lg:block w-1/6 mt-4">
-                <DesktopDropDown className="" races={results.races} />
-                <SideNav className="mt-8" slug={race.slug} links={links} />
+                <div className="fixed">
+                    <DesktopDropDown className="" races={results.races} />
+                    <SideNav className="mt-8" slug={race.slug} links={links} />
+                </div>
             </div>}
             {race && <div className="flex-1 mt-4">
                 <Switch>
