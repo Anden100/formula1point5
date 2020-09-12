@@ -21,7 +21,7 @@ export default function DriverStandings() {
                     </TableHead>
                     <TableBody>
                         {data.races && data.races.map(race => (
-                            <>
+                            <React.Fragment key={race.slug}>
                                 {race.results.fastest_laps && <TableRow key={race.name}>
                                     <TableCell>
                                         <Link to={'/results/races/' + race.slug} className="hover:underline">{race.name}</Link>
@@ -35,7 +35,7 @@ export default function DriverStandings() {
                                     <TableCell>{race.results.fastest_laps[0].time}</TableCell>
                                     <TableCell>{race.results.fastest_laps[0].speed}</TableCell>
                                 </TableRow>}
-                            </>
+                            </React.Fragment>
                         ))}
                     </TableBody>
                 </Table>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from '../components/Table';
 import Card from '../components/Card';
 
-export default function DriverStandings() {
+export default function RaceResults() {
     const data = useContext(AppContext);
 
     return (
@@ -22,7 +22,7 @@ export default function DriverStandings() {
                     </TableHead>
                     <TableBody>
                         {data.races && data.races.map(race => (
-                            <>
+                            <React.Fragment key={race.slug}>
                                 {race.winner && <TableRow key={race.name}>
                                     <TableCell className="">
                                         <Link to={'/results/races/' + race.slug} className="hover:underline">{race.name}</Link>
@@ -37,7 +37,7 @@ export default function DriverStandings() {
                                     <TableCell className="hidden xs:table-cell">{race.laps}</TableCell>
                                     <TableCell className="hidden lg:table-cell">{race.time}</TableCell>
                                 </TableRow>}
-                            </>
+                            </React.Fragment>
                         ))}
                     </TableBody>
                 </Table>

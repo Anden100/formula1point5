@@ -12,7 +12,7 @@ function StandingsDropdown(props) {
     return (
         <div className={props.className} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
             <div className="flex items-center">
-                <NavLink to="/results" activeClassName='border-white-important' className="flex items-baseline block px-2 py-3 border-b-2 border-red-700 hover:bg-red-900 hover:border-red-900 text-white text-sm tracking-wide transition-colors duration-200">
+                <NavLink to="/results" onTouchEnd={(e) => {setIsOpen(!isOpen); e.preventDefault()}} activeClassName='border-white-important' className="flex items-baseline block px-2 py-3 border-b-2 border-red-700 hover:bg-red-900 hover:border-red-900 text-white text-sm tracking-wide transition-colors duration-200">
                     Results
                     <svg className="ml-1 w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
