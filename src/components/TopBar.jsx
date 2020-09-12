@@ -41,14 +41,14 @@ function StandingsDropdown(props) {
     )
 }
 
-export default function TopBar() {
+export default function TopBar(props) {
     const results = useContext(AppContext);
 
     const [isMobileMenu, setIsMobileMenu] = useState(false);
 
     return (
-        <div>
-            <div className="w-full top-0 bg-red-700 flex items-center px-5 shadow-md justify-between">
+        <div className={'w-full ' + props.className}>
+            <div className="w-full bg-red-700 flex items-center px-5 shadow-md justify-between">
                 <NavLink to="/results" className="mr-10" href="#">
                     <svg className="h-5 text-white" viewBox="0 0 1070 191" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M247 0c-30.928 0-73.729 17.729-95.598 39.598L0 191h107l91.009-91.009C214.02 83.98 245.356 71 268 71h290.145l71-71H247z" fill="currentColor" />

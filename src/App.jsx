@@ -12,9 +12,9 @@ function App() {
     return (
         <AppProvider>
             <HashRouter basename='/'>
-                <div className="flex flex-col antialiased text-gray-900 bg-gray-100 h-screen overflow-hidden">
-                    <TopBar />
-                    <div className="py-4 sm:px-4 flex-1 overflow-auto">
+                <div className="antialiased text-gray-900 bg-gray-100 h-screen">
+                    <TopBar className="fixed top-0" />
+                    <div className="mt-12 py-4 sm:px-4">
                         <Switch>
                             <Route exact path='/' component={DriverStandings} />
                             <Route exact path='/results' component={DriverStandings} />
