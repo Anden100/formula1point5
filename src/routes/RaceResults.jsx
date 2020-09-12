@@ -23,7 +23,7 @@ function DesktopDropDown(props) {
 
     return (
         <div className={props.className}>
-            <button onClick={() => setIsOpen(!isOpen)} className="flex items-baseline justify-between block text-gray-700 hover:text-gray-900 text-lg tracking-wide transition-font duration-200">
+            <button onClick={() => setIsOpen(!isOpen)} className="relative z-10 flex items-baseline justify-between block text-gray-700 hover:text-gray-900 text-lg tracking-wide transition-font duration-200">
                 <div>Race</div>
                 <div>
                     {isOpen ?
@@ -38,7 +38,7 @@ function DesktopDropDown(props) {
             </button>
 
             { isOpen &&
-                <button onClick={() => setIsOpen(false)} className="absolute top-0 top-0 right-0 bottom-0 left-0 h-full w-full opacity-0 cursor-default"></button>
+                <button onClick={() => setIsOpen(false)} className="fixed top-0 top-0 right-0 bottom-0 left-0 h-full w-full opacity-0 cursor-default"></button>
             }
 
             { isOpen && <div onClick={() => { setIsOpen(false) }} className="absolute py-2 w-48 text-sm bg-white rounded-md shadow-lg transition duration-500">
