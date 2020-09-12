@@ -23,7 +23,7 @@ function DesktopDropDown(props) {
 
     return (
         <div className={props.className}>
-            <button onClick={() => setIsOpen(!isOpen)} className="relative z-10 flex items-baseline justify-between block text-gray-700 hover:text-gray-900 text-lg tracking-wide transition-font duration-200">
+            <button onClick={() => setIsOpen(!isOpen)} className="flex items-baseline justify-between block text-gray-700 hover:text-gray-900 text-lg tracking-wide transition-font duration-200">
                 <div>Race</div>
                 <div>
                     {isOpen ?
