@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/formula1point5/static/css/main.946b6695.chunk.css",
-    "main.js": "/formula1point5/static/js/main.0b420ed1.chunk.js",
-    "main.js.map": "/formula1point5/static/js/main.0b420ed1.chunk.js.map",
+    "main.css": "/formula1point5/static/css/main.d82ba7a1.chunk.css",
+    "main.js": "/formula1point5/static/js/main.2872f5b7.chunk.js",
+    "main.js.map": "/formula1point5/static/js/main.2872f5b7.chunk.js.map",
     "runtime-main.js": "/formula1point5/static/js/runtime-main.326034bf.js",
     "runtime-main.js.map": "/formula1point5/static/js/runtime-main.326034bf.js.map",
     "static/js/2.23c85037.chunk.js": "/formula1point5/static/js/2.23c85037.chunk.js",
     "static/js/2.23c85037.chunk.js.map": "/formula1point5/static/js/2.23c85037.chunk.js.map",
     "index.html": "/formula1point5/index.html",
-    "precache-manifest.a2a5c0de18ea96052de84e17a52a5e89.js": "/formula1point5/precache-manifest.a2a5c0de18ea96052de84e17a52a5e89.js",
+    "precache-manifest.b87e241ac182bfa164fad34801476e96.js": "/formula1point5/precache-manifest.b87e241ac182bfa164fad34801476e96.js",
     "service-worker.js": "/formula1point5/service-worker.js",
-    "static/css/main.946b6695.chunk.css.map": "/formula1point5/static/css/main.946b6695.chunk.css.map",
+    "static/css/main.d82ba7a1.chunk.css.map": "/formula1point5/static/css/main.d82ba7a1.chunk.css.map",
     "static/js/2.23c85037.chunk.js.LICENSE.txt": "/formula1point5/static/js/2.23c85037.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.326034bf.js",
     "static/js/2.23c85037.chunk.js",
-    "static/css/main.946b6695.chunk.css",
-    "static/js/main.0b420ed1.chunk.js"
+    "static/css/main.d82ba7a1.chunk.css",
+    "static/js/main.2872f5b7.chunk.js"
   ]
 }
