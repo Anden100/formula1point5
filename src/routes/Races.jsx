@@ -16,7 +16,7 @@ export default function RaceResults() {
                         <TableHeader className="">Grand Prix</TableHeader>
                         <TableHeader className="hidden md:table-cell">Date</TableHeader>
                         <TableHeader className="">Winner</TableHeader>
-                        <TableHeader>Car</TableHeader>
+                        <TableHeader className="hidden sm:table-cell">Car</TableHeader>
                         <TableHeader className="hidden xs:table-cell">Laps</TableHeader>
                         <TableHeader className="hidden lg:table-cell">Time</TableHeader>
                     </TableHead>
@@ -29,11 +29,17 @@ export default function RaceResults() {
                                     </TableCell>
                                     <TableCell className="hidden md:table-cell">{race.date}</TableCell>
                                     <TableCell className="text-gray-700">
-                                        <span className="hidden lg:inline">{race.winner.first + ' '}</span>
+                                        {/* <span className="hidden lg:inline">{race.winner.first + ' '}</span>
                                         <span className="hidden sm:inline">{race.winner.last}</span>
-                                        <span className="sm:hidden">{race.winner.abbr}</span>
+                                        <span className="sm:hidden">{race.winner.abbr}</span> */}
+
+                                        <div>
+                                            <span className="lg:inline">{race.winner.first + ' '}</span>
+                                            <span className="sm:inline">{race.winner.last}</span>
+                                        </div>
+                                        <div className="sm:hidden text-gray-600 text-xs uppercase">{race.car}</div>
                                     </TableCell>
-                                    <TableCell className="text-xs uppercase">{race.car}</TableCell>
+                                    <TableCell className="hidden sm:table-cell text-xs uppercase">{race.car}</TableCell>
                                     <TableCell className="hidden xs:table-cell">{race.laps}</TableCell>
                                     <TableCell className="hidden lg:table-cell">{race.time}</TableCell>
                                 </TableRow>}

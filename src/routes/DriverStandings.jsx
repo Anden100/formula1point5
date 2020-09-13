@@ -14,19 +14,21 @@ export default function DriverStandings() {
                     <TableHead>
                         <TableHeader>Pos</TableHeader>
                         <TableHeader>Driver</TableHeader>
-                        <TableHeader>Car</TableHeader>
+                        <TableHeader className="hidden sm:table-cell">Car</TableHeader>
                         <TableHeader className="text-right pr-4">Points</TableHeader>
                     </TableHead>
                     <TableBody>
                         { results.drivers && results.drivers.map(driver => (
                             <TableRow key={driver.position}>
                                 <TableCell>{driver.position}</TableCell>
-                                <TableCell className="text-gray-700">
-                                    <span className="hidden lg:inline">{driver.first + ' '}</span>
-                                    <span className="hidden sm:inline">{driver.last}</span>
-                                    <span className="sm:hidden">{driver.abbr}</span>
+                                <TableCell className="text-gray-700 leading-snug">
+                                    <div>
+                                        <span className="lg:inline">{driver.first + ' '}</span>
+                                        <span className="sm:inline">{driver.last}</span>
+                                    </div>
+                                    <div className="sm:hidden text-gray-600 text-xs uppercase">{driver.car}</div>
                                 </TableCell>
-                                <TableCell className="text-xs uppercase">{driver.car}</TableCell>
+                                <TableCell className="hidden sm:table-cell text-xs uppercase">{driver.car}</TableCell>
                                 <TableCell className="pr-4 text-right text-gray-700">{driver.points}</TableCell>
                             </TableRow>
                         ))}

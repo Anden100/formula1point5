@@ -5,7 +5,7 @@ import { Switch, Route, HashRouter } from 'react-router-dom';
 import ConstructorStandings from './routes/ConstructorStandings';
 import Races from './routes/Races';
 import { AppProvider } from './context/AppContext';
-import RaceResults from './routes/RaceResults';
+import SessionResults from './routes/SessionResults';
 import FastestLaps from './routes/FastestLaps';
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
                             <Route path='/results/drivers' component={DriverStandings} />
                             <Route path='/results/constructors' component={ConstructorStandings} />
                             <Route exact path='/results/races' component={Races} />
-                            <Route path='/results/races/:slug' component={RaceResults} />
+                            <Route path='/results/races/:slug' component={SessionResults} />
                             <Route exact path='/results/fastestlap' component={FastestLaps} />
                         </Switch>
                     </div>

@@ -256,7 +256,7 @@ function PracticeResultsTable(props) {
     )
 }
 
-export default function RaceResults(props) {
+export default function SessionResults(props) {
     const results = useContext(AppContext);
     const race = results.races ? results.races.find(race => race.slug === props.match.params.slug) : null;
 
