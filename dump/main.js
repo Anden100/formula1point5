@@ -3,6 +3,37 @@ const cheerio = require('cheerio');
 
 const BASE_URL = 'https://www.formula1.com/';
 
+function timeToMs(time) {
+    if (time[0] == '+') {
+        const parts = time.slice(1, -1).split(/[.]/);
+        return parseInt(parts[0]) * 1000 + parseInt(parts[1]);
+    }
+
+    const parts = time.split(/[.:]/);
+    const hours = parseInt(parts[0]) * (1000 * 60 * 60);
+    const minutes = parseInt(parts[1]) * (1000 * 60);
+    const seconds = parseInt(parts[2]) * 1000;
+    const milliseconds = parseInt(parts[3]);
+    return hours + minutes + seconds + milliseconds;
+}
+
+function msToTime(duration) {
+    let milliseconds = parseInt(duration % 1000);
+    let seconds = Math.floor((duration / 1000) % 60);
+    let minutes = Math.floor((duration / (1000 * 60)) % 60);
+    let hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+    milliseconds = String(milliseconds).padStart(3, '0')
+
+    return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+}
+
+function msToOffset(duration) {
+    return '+' + String(duration / 1000) + 's';
+}
+
 function parseDriver(c, cell) {
     const names = c(cell).find('span');
     return {
@@ -63,7 +94,9 @@ async function parseRaceResults(teams, html) {
         links[c(element).attr('data-value')] = c(element).attr('data-ajax-url');
     });
 
-    cur_pos = 1;
+    let currentPosition = 1;
+    let raceDuration = 0;
+    
     const results = [];
     c('tbody').find('tr').each((index, element) => {
         const cells = c(element).find('td');
@@ -71,20 +104,27 @@ async function parseRaceResults(teams, html) {
         const driver = parseDriver(c, cells[3]);
         driver.number = Number(c(cells[2]).text().trim());
 
-        pos = c(cells[1]).text().trim();
+        const pos = c(cells[1]).text().trim();
+        const time = raceDuration + timeToMs(c(cells[6]).text().trim());
+        raceDuration = raceDuration === 0 ? time : raceDuration;
 
         const result = {
-            pos: pos === 'NC' ? 'NC' : cur_pos,
+            pos: pos === 'NC' ? 'NC' : currentPosition,
             driver,
             car: c(cells[4]).text().trim(),
             laps: Number(c(cells[5]).text().trim()),
-            time: c(cells[6]).text().trim(),
-            // points: Number(c(cells[7]).text().trim()),
+            time: time,
         }
 
         if (teams.includes(result.car)) {
+            if (results.length > 0) {
+                result.gap = msToOffset(result.time - results[0].time);
+            }
+            else {
+                result.gap = msToTime(result.time);
+            }
             results.push(result);
-            cur_pos++;
+            currentPosition++;
         }
     })
 
@@ -216,7 +256,6 @@ function scores2020(race) {
         const driver = res.driver;
         driver.car = res.car;
         if (res.pos <= 10) {
-            console.log(driver, points[res.pos - 1]);
             driver.points = points[res.pos - 1];
         }
         else {
@@ -260,7 +299,6 @@ async function updateAllData() {
             race.results.race_results[i].points = driver.points;
     
             const j = drivers.findIndex(d => d.abbr === driver.abbr);
-            console.log(j);
             if (j >= 0) {
                 drivers[j].points += driver.points;
             }
