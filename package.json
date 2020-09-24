@@ -1,6 +1,6 @@
 {
   "name": "f15",
-  "homepage":"http://anden100.github.io/formula1point5",
+  "homepage": "http://anden100.github.io/formula1point5",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

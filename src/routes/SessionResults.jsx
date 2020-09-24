@@ -138,7 +138,7 @@ function RaceResultsTable(props) {
                             </TableCell>
                             <TableCell className="hidden md:table-cell text-xs uppercase">{s.car}</TableCell>
                             <TableCell>{s.laps}</TableCell>
-                            <TableCell className="hidden sm:table-cell">{s.time}</TableCell>
+                            <TableCell className="hidden sm:table-cell">{s.gap}</TableCell>
                             <TableCell className="text-right pr-4">{s.points}</TableCell>
                         </TableRow>
                     ))}

@@ -116,7 +116,10 @@ function parseRaceResults(teams, html) {
         }
 
         if (teams.includes(result.car)) {
-            if (results.length > 0) {
+            if (isNaN(result.time)) {
+                result.gap = '+1 lap';
+            }
+            else if (results.length > 0) {
                 result.gap = msToOffset(result.time - results[0].time);
             }
             else {
