@@ -112,6 +112,9 @@ function parseRaceResults(teams, html) {
         else if (timeString === 'DNF') {
             time = timeString;
         }
+        else if (timeString === 'DNS') {
+            time = timeString;
+        }
         else {
             time = raceDuration + timeToMs(c(cells[6]).text().trim());
         }
