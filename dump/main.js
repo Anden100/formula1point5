@@ -44,7 +44,6 @@ function parseDriver(c, cell) {
 }
 
 async function fetch(baseUrl = '', href = '') {
-    console.log(baseUrl + href);
     const res = await axios.get(baseUrl + href);
     return res.data;
 }
@@ -86,7 +85,7 @@ async function parseFastestLap(teams, html) {
     return [results, links];
 }
 
-async function parseRaceResults(teams, html) {
+function parseRaceResults(teams, html) {
     const c = cheerio.load(html);
 
     const links = {};
@@ -131,7 +130,7 @@ async function parseRaceResults(teams, html) {
     return [results, links];
 }
 
-async function parsePracticeResults(teams, html) {
+function parsePracticeResults(teams, html) {
     const c = cheerio.load(html);
 
     const links = {};
@@ -166,7 +165,7 @@ async function parsePracticeResults(teams, html) {
     return [results, links];
 }
 
-async function parseQualificationResults(teams, html) {
+function parseQualificationResults(teams, html) {
     const c = cheerio.load(html);
 
     const links = {};
@@ -231,15 +230,15 @@ async function getAllRaceResults(teams) {
         }
 
         if (links['practice-3']) {
-            const [practice3] = await parsePracticeResults(teams, fetch(BASE_URL, links['practice-3']));
+            const [practice3] = await parsePracticeResults(teams, await fetch(BASE_URL, links['practice-3']));
             race.results.practice3 = practice3;
         }
         if (links['practice-2']) {
-            const [practice2] = await parsePracticeResults(teams, fetch(BASE_URL, links['practice-2']));
+            const [practice2] = await parsePracticeResults(teams, await fetch(BASE_URL, links['practice-2']));
             race.results.practice2 = practice2;
         }
         if (links['practice-1']) {
-            const [practice1] = await parsePracticeResults(teams, fetch(BASE_URL, links['practice-1']));
+            const [practice1] = await parsePracticeResults(teams, await fetch(BASE_URL, links['practice-1']));
             race.results.practice1 = practice1;
         }
 
@@ -364,12 +363,17 @@ function main() {
     }
 }
 
+async function test() {
+    try {
+        const href = '/content/fom-website/en/results/jcr:content/resultsarchive.html/2020/races/1049/great-britain/practice-3.html';
+        const [res] = await parsePracticeResults(teams, await fetch(BASE_URL, href));
+        console.log(res);
+    }
+    catch(err) {
+        console.log(err);
+    }
+
+}
+
 main();
-
-// getPracticeResults(teams, '/content/fom-website/en/results/jcr:content/resultsarchive.html/2020/races/1053/italy/practice-2.html').then(res => {
-//     console.log(JSON.stringify(res[0]));
-// })
-
-// getQualificationResults(teams, '/en/results/jcr:content/resultsarchive.html/2020/races/1053/italy/qualifying.html').then(res => {
-//     console.log(JSON.stringify(res[0]));
-// })
+// test();
