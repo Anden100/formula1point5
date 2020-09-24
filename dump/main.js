@@ -104,7 +104,17 @@ function parseRaceResults(teams, html) {
         driver.number = Number(c(cells[2]).text().trim());
 
         const pos = c(cells[1]).text().trim();
-        const time = raceDuration + timeToMs(c(cells[6]).text().trim());
+        const timeString = c(cells[6]).text().trim();
+        let time = '';
+        if (timeString === '+1 lap') {
+            time = timeString;
+        }
+        else if (timeString === 'DNF') {
+            time = timeString;
+        }
+        else {
+            time = raceDuration + timeToMs(c(cells[6]).text().trim());
+        }
         raceDuration = raceDuration === 0 ? time : raceDuration;
 
         const result = {
@@ -117,7 +127,7 @@ function parseRaceResults(teams, html) {
 
         if (teams.includes(result.car)) {
             if (isNaN(result.time)) {
-                result.gap = '+1 lap';
+                result.gap = result.time;
             }
             else if (results.length > 0) {
                 result.gap = msToOffset(result.time - results[0].time);
