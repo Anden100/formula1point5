@@ -355,41 +355,44 @@ async function updateAllData() {
         races: races
     }
     
-    console.log(JSON.stringify(results));
+    return results;
 }
 
 function getResultsType(html) {
     const c = cheerio.load(html);
-    const select = c('[name=resultType] option[selected="selected"]');
-    console.log(select);
+    const select = c('.side-nav-item-link.ArchiveLink.selected');
+    return c(select).text();
 }
 
 async function getLinkResults(url) {
     const html = await fetch(url);
-    getResultsType(html);
-    // getQualificationResults(teams, 'https://www.formula1.com/en/results.html/2020/races/1049/great-britain/qualifying.html');
+    const type = getResultsType(html);
+    switch (type) {
+        case 'Race result':
+            return parseRaceResults(teams, html);
+        case 'Fastest laps':
+            return parseFastestLap(teams, html);
+        case 'Qualifying':
+            return parseQualificationResults(teams, html);
+        case 'Practice 3':
+        case 'Practice 2':
+        case 'Practice 1':
+            return parsePracticeResults(teams, html);
+        default:
+            console.log('Unknown type:', type);
+            return;
+    }
 }
 
-function main() {
+async function main() {
     if (process.argv.length > 2) {
-        getLinkResults('https://www.formula1.com/en/results.html/2020/races/1049/great-britain/qualifying.html');
+        const [results] = await getLinkResults(process.argv[2]);
+        console.log(JSON.stringify(results));
     }
     else {
-        updateAllData();
+        const results = await updateAllData();
+        console.log(JSON.stringify(results));
     }
-}
-
-async function test() {
-    try {
-        const href = '/content/fom-website/en/results/jcr:content/resultsarchive.html/2020/races/1049/great-britain/practice-3.html';
-        const [res] = await parsePracticeResults(teams, await fetch(BASE_URL, href));
-        console.log(res);
-    }
-    catch(err) {
-        console.log(err);
-    }
-
 }
 
 main();
-// test();
