@@ -29,10 +29,6 @@ export default function RaceResults() {
                                     </TableCell>
                                     <TableCell className="hidden md:table-cell">{race.date}</TableCell>
                                     <TableCell className="text-gray-700">
-                                        {/* <span className="hidden lg:inline">{race.winner.first + ' '}</span>
-                                        <span className="hidden sm:inline">{race.winner.last}</span>
-                                        <span className="sm:hidden">{race.winner.abbr}</span> */}
-
                                         <div>
                                             <span className="lg:inline">{race.winner.first + ' '}</span>
                                             <span className="sm:inline">{race.winner.last}</span>

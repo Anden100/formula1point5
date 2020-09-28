@@ -7,6 +7,7 @@ import Races from './routes/Races';
 import { AppProvider } from './context/AppContext';
 import SessionResults from './routes/SessionResults';
 import FastestLaps from './routes/FastestLaps';
+import DriverResults from './routes/DriverResults';
 
 function App() {
     return (
@@ -18,11 +19,12 @@ function App() {
                         <Switch>
                             <Route exact path='/' component={DriverStandings} />
                             <Route exact path='/results' component={DriverStandings} />
-                            <Route path='/results/drivers' component={DriverStandings} />
+                            <Route exact path='/results/drivers' component={DriverStandings} />
                             <Route path='/results/constructors' component={ConstructorStandings} />
                             <Route exact path='/results/races' component={Races} />
                             <Route path='/results/races/:slug' component={SessionResults} />
                             <Route exact path='/results/fastestlap' component={FastestLaps} />
+                            <Route path='/results/drivers/:slug' component={DriverResults} />
                         </Switch>
                     </div>
                 </div>

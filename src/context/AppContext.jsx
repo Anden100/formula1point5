@@ -6,8 +6,10 @@ export const AppProvider = ({children}) => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
+        const url = 'https://raw.githubusercontent.com/Anden100/formula1point5/master/public/2020.json';
+        // const url = '/formula1point5/2020.json';
         console.log('Fetching...');
-        fetch('https://raw.githubusercontent.com/Anden100/formula1point5/master/public/2020.json').then(res => res.json()).then(d => {
+        fetch(url).then(res => res.json()).then(d => {
             setData(d);
         });
     }, []);

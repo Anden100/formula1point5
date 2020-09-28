@@ -36,11 +36,12 @@ function msToOffset(duration) {
 
 function parseDriver(c, cell) {
     const names = c(cell).find('span');
-    return {
-        first: c(names[0]).text().trim(),
-        last: c(names[1]).text().trim(),
-        abbr: c(names[2]).text().trim(),
-    };
+    const first = c(names[0]).text().trim();
+    const last = c(names[1]).text().trim();
+    const abbr = c(names[2]).text().trim();
+    const slug = (first + '-' + last).toLowerCase();
+    
+    return { first, last, abbr, slug };
 }
 
 async function fetch(baseUrl = '', href = '') {
