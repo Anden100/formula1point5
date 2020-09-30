@@ -13,7 +13,7 @@ function App() {
     return (
         <AppProvider>
             <HashRouter basename='/'>
-                <div className="antialiased text-gray-900 bg-gray-100 h-screen">
+                <div className="antialiased text-gray-900 bg-gray-100">
                     <TopBar className="fixed top-0" />
                     <div className="mt-12 py-4 sm:px-4">
                         <Switch>
