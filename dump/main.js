@@ -1,3 +1,5 @@
+const fs = require('fs').promises;
+
 const axios = require('axios');
 const cheerio = require('cheerio');
 
@@ -40,7 +42,7 @@ function parseDriver(c, cell) {
     const last = c(names[1]).text().trim();
     const abbr = c(names[2]).text().trim();
     const slug = (first + '-' + last).toLowerCase();
-    
+
     return { first, last, abbr, slug };
 }
 
@@ -96,7 +98,7 @@ function parseRaceResults(teams, html) {
 
     let currentPosition = 1;
     let raceDuration = 0;
-    
+
     const results = [];
     c('tbody').find('tr').each((index, element) => {
         const cells = c(element).find('td');
@@ -109,14 +111,11 @@ function parseRaceResults(teams, html) {
         let time = '';
         if (timeString === '+1 lap') {
             time = timeString;
-        }
-        else if (timeString === 'DNF') {
+        } else if (timeString === 'DNF') {
             time = timeString;
-        }
-        else if (timeString === 'DNS') {
+        } else if (timeString === 'DNS') {
             time = timeString;
-        }
-        else {
+        } else {
             time = raceDuration + timeToMs(c(cells[6]).text().trim());
         }
         raceDuration = raceDuration === 0 ? time : raceDuration;
@@ -132,11 +131,9 @@ function parseRaceResults(teams, html) {
         if (teams.includes(result.car)) {
             if (isNaN(result.time)) {
                 result.gap = result.time;
-            }
-            else if (results.length > 0) {
+            } else if (results.length > 0) {
                 result.gap = msToOffset(result.time - results[0].time);
-            }
-            else {
+            } else {
                 result.gap = msToTime(result.time);
             }
             results.push(result);
@@ -219,8 +216,8 @@ function parseQualificationResults(teams, html) {
     return [results, links];
 }
 
-async function getAllRaceResults(teams) {
-    const racesUrl = 'https://www.formula1.com/en/results/jcr:content/resultsarchive.html/2020/races.html';
+async function getAllRaceResults(teams, season) {
+    const racesUrl = `https://www.formula1.com/en/results/jcr:content/resultsarchive.html/${season}/races.html`;
 
     res = await axios.get(racesUrl);
     const c = cheerio.load(res.data);
@@ -265,20 +262,30 @@ async function getAllRaceResults(teams) {
     return Promise.all(promises);
 }
 
-function scores2020(race) {
-    const points = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+function scoring(race, points) {
     drivers = [];
     race.results.race_results.map(res => {
         const driver = res.driver;
         driver.car = res.car;
         if (res.pos <= 10) {
             driver.points = points[res.pos - 1];
-        }
-        else {
+        } else {
             driver.points = 0;
         }
         drivers.push(driver);
     });
+    
+    return drivers;
+}
+
+function scoring2010(race) {
+    const points = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+    return scoring(race, points);
+}
+
+function scoring2019(race) {
+    const points = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+    drivers = scoring(race, points);
     const fastest = race.results.fastest_laps[0];
     const i = drivers.findIndex(d => d.abbr === fastest.driver.abbr);
     if (drivers[i].points > 0) {
@@ -288,60 +295,66 @@ function scores2020(race) {
     return drivers;
 }
 
-const teams = [
-    'Ferrari',
-    'McLaren Renault',
-    'Racing Point BWT Mercedes',
-    'AlphaTauri Honda',
-    'Renault',
-    'Alfa Romeo Racing Ferrari',
-    'Williams Mercedes',
-    'Haas Ferrari',
-];
+const scorings = {
+    2010: scoring2010,
+    2011: scoring2010,
+    2012: scoring2010,
+    2013: scoring2010,
+    2014: scoring2010,
+    2015: scoring2010,
+    2016: scoring2010,
+    2017: scoring2010,
+    2018: scoring2010,
+    2019: scoring2019,
+    2020: scoring2019,
+}
 
-const penalities = [
-    { team: 'Racing Point BWT Mercedes', points: 15 }
-]
+async function updateSeason(season) {
+    const params = JSON.parse(await fs.readFile('seasons.json'))[season];
+    console.log(params);
 
-
-async function updateAllData() {
-    races = await getAllRaceResults(teams);
+    races = await getAllRaceResults(params.teams, season);
     let drivers = [];
     races.map(race => {
-        race.slug = race.name.toLowerCase().replace(/\s/g , "-");
-        const scores = scores2020(race);
+        race.slug = race.name.toLowerCase().replace(/\s/g, "-");
+        const scores = scorings[season](race);
         scores.forEach(driver => {
             const i = race.results.race_results.findIndex(r => r.driver.abbr === driver.abbr);
             race.results.race_results[i].points = driver.points;
-    
+
             const j = drivers.findIndex(d => d.abbr === driver.abbr);
             if (j >= 0) {
                 drivers[j].points += driver.points;
-            }
-            else {
+            } else {
                 drivers.push(driver);
             }
         });
     });
-    
+
     constructors = [];
     drivers = drivers.sort((a, b) => b.points - a.points);
     for (let i = 0; i < drivers.length; i++) {
         drivers[i].position = i + 1;
-    
+
         const j = constructors.findIndex(c => c.car === drivers[i].car);
         if (j >= 0) {
             constructors[j].points += drivers[i].points;
-        }
-        else {
+        } else {
             constructors.push({ car: drivers[i].car, points: drivers[i].points });
         }
     }
 
-    for (let i = 0; i < penalities.length; i++) {
-        const j = constructors.findIndex(c => c.car === penalities[i].team);
+    for (let i = 0; i < params.penalties.teams.length; i++) {
+        const j = constructors.findIndex(c => c.car === params.penalties.teams[i].team);
         if (j >= 0) {
-            constructors[j].points -= penalities[i].points;
+            constructors[j].points -= params.penalties.teams[i].points;
+        }
+    }
+
+    for (let i = 0; i < params.penalties.drivers.length; i++) {
+        const j = drivers.findIndex(c => c.name === params.penalties.drivers[i].name);
+        if (j >= 0) {
+            drivers[j].points -= params.penalties.drivers[i].points;
         }
     }
     
@@ -349,14 +362,14 @@ async function updateAllData() {
     for (let i = 0; i < constructors.length; i++) {
         constructors[i].position = i + 1;
     }
-    
+
     const results = {
         drivers: drivers,
         constructors: constructors,
         races: races
     }
-    
-    return results;
+
+    fs.writeFile('data/' + season + '.json', JSON.stringify(results));
 }
 
 function getResultsType(html) {
@@ -385,14 +398,64 @@ async function getLinkResults(url) {
     }
 }
 
-async function main() {
-    if (process.argv.length > 2) {
-        const [results] = await getLinkResults(process.argv[2]);
-        console.log(JSON.stringify(results));
+
+// async function main() {
+//     if (process.argv.length > 2) {
+//         const [results] = await getLinkResults(process.argv[2]);
+//         console.log(JSON.stringify(results));
+//     } else {
+//         const results = await updateAllData();
+//         console.log(JSON.stringify(results));
+//     }
+// }
+
+function commandLineArgs(optionDefinitions) {
+    const argv = process.argv;
+    const options = {};
+
+    for (let i = 0; i < argv.length; i++) {
+        if (argv[i][0] === '-') {
+            if (argv[i][1] === '-') {
+                console.log(argv[i].slice(2));
+                const optionDefinition = optionDefinitions.find(o => o.name === argv[i].slice(2));
+                if (optionDefinition) {
+                    options[optionDefinition.name] = optionDefinition.type(argv[i+1]);
+                    i++;
+                }
+            } else {
+                const optionDefinition = optionDefinitions.find(o => o.alias === argv[i].slice(1));
+                if (optionDefinition) {
+                    options[optionDefinition.name] = optionDefinition.type(argv[i+1]);
+                    i++;
+                }
+            }
+        }
     }
-    else {
-        const results = await updateAllData();
-        console.log(JSON.stringify(results));
+
+    return options;
+}
+
+function printHelp(optionDefinitions) {
+    console.log('No valid arguments passed, possible arguments are:');
+
+    optionDefinitions.forEach(o => {
+        console.log(`--${o.name} (-${o.alias}) [${o.type.name}] -> ${o.description}`);
+    });
+}
+
+async function main() {
+    const optionDefinitions = [
+        { name: 'year', alias: 'y', type: Number, description: 'Year to update' },
+        { name: 'url', alias: 'u', type: String, description: 'URL to parse' },
+    ];
+
+    options = commandLineArgs(optionDefinitions);
+    if (options['year']) {
+        updateSeason(options['year']);
+    } else if (options['url']) {
+
+    } else {
+        printHelp(optionDefinitions);
     }
 }
 

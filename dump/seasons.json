@@ -1,0 +1,35 @@
+{
+    "2020": {
+        "teams": [
+            "Ferrari",
+            "McLaren Renault",
+            "Racing Point BWT Mercedes",
+            "AlphaTauri Honda",
+            "Renault",
+            "Alfa Romeo Racing Ferrari",
+            "Williams Mercedes",
+            "Haas Ferrari"
+        ],
+        "penalties": {
+            "teams": [
+                { "team": "Racing Point BWT Mercedes", "points": 15 }
+            ],
+            "drivers": []
+        }
+    },
+    "2019": {
+        "teams": [
+            "McLaren Renault",
+            "Racing Point BWT Mercedes",
+            "AlphaTauri Honda",
+            "Renault",
+            "Alfa Romeo Racing Ferrari",
+            "Williams Mercedes",
+            "Haas Ferrari"
+        ],
+        "penalties": {
+            "teams": [],
+            "drivers": []
+        }
+    }
+}
