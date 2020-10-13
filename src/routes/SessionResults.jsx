@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
 import { NavLink, Redirect, Route, Switch } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/Table';
@@ -257,7 +257,21 @@ function PracticeResultsTable(props) {
 }
 
 export default function SessionResults(props) {
-    const results = useContext(AppContext);
+    const [results, setResults] = useState(null);
+    const context = useContext(AppContext);
+
+    useEffect(() => {
+        async function fetchData() {
+            const r = await context(2020);
+            setResults(r);
+        }
+        fetchData();
+    }, [context])
+
+    if (!results) {
+        return null;
+    }
+
     const race = results.races ? results.races.find(race => race.slug === props.match.params.slug) : null;
 
     const links = [];

@@ -1,11 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/Table';
 import { AppContext } from '../context/AppContext';
 
 export default function DriverResults(props) {
-    const results = useContext(AppContext);
+    const [results, setResults] = useState(null);
+    const context = useContext(AppContext);
+    
+    useEffect(() => {
+        async function fetchData() {
+            const r = await context(2020);
+            setResults(r);
+        }
+        fetchData();
+    }, [context]);
+
+    if (!results) {
+        return null;
+    }
+
     const driver = results.drivers ? results.drivers.find(driver => driver.slug === props.match.params.slug) : null;
 
     const raceResults = [];

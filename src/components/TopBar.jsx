@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { AppContext } from '../context/AppContext';
@@ -6,8 +6,21 @@ import { AppContext } from '../context/AppContext';
 function StandingsDropdown(props) {
     const [isOpen, setIsOpen] = useState(false);
     const nodeRef = useRef(null);
+    
+    const [results, setResults] = useState(null);
+    const context = useContext(AppContext);
 
-    const results = useContext(AppContext);
+    useEffect(() => {
+        async function fetchData() {
+            const r = await context(2020);
+            setResults(r);
+        }
+        fetchData();
+    }, [context]);
+
+    if (!results) {
+        return null;
+    }
 
     return (
         <div className={props.className} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>

@@ -1,10 +1,24 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Card from '../components/Card';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '../components/Table';
 import { AppContext } from '../context/AppContext';
 
 export default function ConstructurStandings() {
-    const results = useContext(AppContext);
+    const [results, setResults] = useState(null);
+    const context = useContext(AppContext);
+
+    useEffect(() => {
+        async function fetchData() {
+            const r = await context(2020);
+            setResults(r);
+        }
+        fetchData();
+    }, [context]);
+
+    if (!results) {
+        return null;
+    }
+
 
     return (
         <Card>
