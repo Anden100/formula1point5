@@ -23,7 +23,7 @@ function DesktopDropDown(props) {
 
     return (
         <div className={props.className}>
-            <button onClick={() => setIsOpen(!isOpen)} className="relative z-10 flex items-baseline justify-between block text-gray-700 hover:text-gray-900 text-lg tracking-wide transition-font duration-200">
+            <button onClick={() => setIsOpen(!isOpen)} className="flex items-baseline justify-between block text-gray-700 hover:text-gray-900 text-lg tracking-wide transition-font duration-200">
                 <div>Race</div>
                 <div>
                     {isOpen ?
@@ -38,7 +38,7 @@ function DesktopDropDown(props) {
             </button>
 
             { isOpen &&
-                <button onClick={() => setIsOpen(false)} className="fixed top-0 top-0 right-0 bottom-0 left-0 h-full w-full opacity-0 cursor-default"></button>
+                <button onClick={() => setIsOpen(false)} className="top-0 top-0 right-0 bottom-0 left-0 h-full w-full opacity-0 cursor-default"></button>
             }
 
             { isOpen && <div onClick={() => { setIsOpen(false) }} className="absolute py-2 w-48 text-sm bg-white rounded-md shadow-lg transition duration-500">
@@ -304,7 +304,7 @@ export default function SessionResults(props) {
                 <MobileSessionSelect className="mt-4" slug={race.slug} links={links} />
             </div>}
             {race && <div className="hidden lg:block w-1/6 mt-4">
-                <div className="fixed">
+                <div>
                     <DesktopDropDown className="" races={results.races} />
                     <SideNav className="mt-8" slug={race.slug} links={links} />
                 </div>

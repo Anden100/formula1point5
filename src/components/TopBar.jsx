@@ -6,7 +6,7 @@ import { AppContext } from '../context/AppContext';
 function StandingsDropdown(props) {
     const [isOpen, setIsOpen] = useState(false);
     const nodeRef = useRef(null);
-    
+
     const [results, setResults] = useState(null);
     const context = useContext(AppContext);
 
@@ -25,7 +25,7 @@ function StandingsDropdown(props) {
     return (
         <div className={props.className} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
             <div className="flex items-center">
-                <NavLink to="/results" onTouchEnd={(e) => {setIsOpen(!isOpen); e.preventDefault()}} activeClassName='border-white-important' className="flex items-baseline block px-2 py-3 border-b-2 border-red-700 hover:bg-red-900 hover:border-red-900 text-white text-sm tracking-wide transition-colors duration-200">
+                <NavLink to="/results" onTouchEnd={(e) => { setIsOpen(!isOpen); e.preventDefault() }} activeClassName='border-white-important' className="flex items-baseline block px-2 py-3 border-b-2 border-red-700 hover:bg-red-900 hover:border-red-900 text-white text-sm tracking-wide transition-colors duration-200">
                     Results
                     <svg className="ml-1 w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -55,7 +55,19 @@ function StandingsDropdown(props) {
 }
 
 export default function TopBar(props) {
-    const results = useContext(AppContext);
+    const [isOpen, setIsOpen] = useState(false);
+    const nodeRef = useRef(null);
+
+    const [results, setResults] = useState(null);
+    const context = useContext(AppContext);
+
+    useEffect(() => {
+        async function fetchData() {
+            const r = await context(2020);
+            setResults(r);
+        }
+        fetchData();
+    }, [context]);
 
     const [isMobileMenu, setIsMobileMenu] = useState(false);
 
@@ -95,8 +107,8 @@ export default function TopBar(props) {
                 <NavLink to="/results/races" className="block px-6 py-2 hover:bg-red-600 hover:text-white transition duration-200">Races</NavLink>
                 <NavLink to="/results/fastestlap" className="block px-6 py-2 hover:bg-red-600 hover:text-white transition duration-200">Fastest Laps</NavLink>
                 {results.races &&
-                        <NavLink to={'/results/races/' + results.races[results.races.length - 1].slug} className="block px-6 py-2 hover:bg-red-600 hover:text-white transition duration-200">Season</NavLink>
-                    }
+                    <NavLink to={'/results/races/' + results.races[results.races.length - 1].slug} className="block px-6 py-2 hover:bg-red-600 hover:text-white transition duration-200">Season</NavLink>
+                }
             </div>}
         </div>
     )
