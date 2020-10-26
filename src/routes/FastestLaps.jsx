@@ -1,25 +1,15 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/Table';
 import Card from '../components/Card';
 
 export default function DriverStandings() {
-    const [results, setResults] = useState(null);
-    const context = useContext(AppContext);
-
-    useEffect(() => {
-        async function fetchData() {
-            const r = await context(2020);
-            setResults(r);
-        }
-        fetchData();
-    }, [context]);
+    const results = useContext(AppContext);
 
     if (!results) {
         return null;
     }
-
 
     return (
         <Card>

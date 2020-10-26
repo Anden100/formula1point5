@@ -1,24 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from '../components/Table';
 import Card from '../components/Card';
 
 export default function RaceResults() {
-    const [results, setResults] = useState(null);
-    const context = useContext(AppContext);
-
-    useEffect(() => {
-        async function fetchData() {
-            const r = await context(2020);
-            setResults(r);
-        }
-        fetchData();
-    }, [context]);
-
-    if (!results) {
-        return null;
-    }
+    const results = useContext(AppContext);
 
     return (
         <Card>

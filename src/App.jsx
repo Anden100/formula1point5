@@ -14,7 +14,7 @@ function App() {
         <AppProvider>
             <HashRouter basename='/'>
                 <div className="antialiased text-gray-900 bg-gray-100">
-                    <TopBar className="fixed top-0" />
+                    <TopBar />
                     <div className="mt-12 py-4 sm:px-4">
                         <div className="container mx-auto">
                             <Switch>
@@ -23,6 +23,7 @@ function App() {
                                 <Route exact path='/results/drivers' component={DriverStandings} />
                                 <Route path='/results/constructors' component={ConstructorStandings} />
                                 <Route exact path='/results/races' component={Races} />
+                                <Route path='/results/races/:slug/:session' component={SessionResults} />
                                 <Route path='/results/races/:slug' component={SessionResults} />
                                 <Route exact path='/results/fastestlap' component={FastestLaps} />
                                 <Route path='/results/drivers/:slug' component={DriverResults} />

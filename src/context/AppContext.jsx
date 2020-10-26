@@ -1,27 +1,26 @@
 import React, { createContext, useState } from 'react';
+import { useEffect } from 'react';
 
 export const AppContext = createContext();
 
 export const AppProvider = ({children}) => {
-    const [data, setData] = useState({});
+    const [results, setResults] = useState({});
 
-    const fetchYear = async year => {
-        console.log(year);
-        console.log(data);    
-        if (data[year]) {
-            return data[year];
+    useEffect(() => {
+        async function fetchData() {
+            const year = 2020;
+            const url = `https://raw.githubusercontent.com/Anden100/formula1point5/master/dump/data/${year}.json`;
+            const res = await fetch(url);
+            const d = await res.json();
+            setResults(d);
         }
-        const url = `https://raw.githubusercontent.com/Anden100/formula1point5/master/dump/data/${year}.json`;
-        const res = await fetch(url);
-        const d = await res.json();
-        setData({...data, [year]: d});
-        return d;
-    }
+        fetchData();
+    }, []);
 
     const { Provider } = AppContext;
 
     return (
-        <Provider value={fetchYear}>
+        <Provider value={ results }>
             { children }
         </Provider>
     )
