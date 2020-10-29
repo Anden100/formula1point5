@@ -10,7 +10,7 @@ interface SelectProps {
 export default function Select(props: SelectProps) {
     return (
         <div className={'relative ' + props.className}>
-            <select value={props.value} onChange={props.onChange} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+            <select value={props.value} onChange={props.onChange} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 md:py-3 px-2 md:px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                 {props.children}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">

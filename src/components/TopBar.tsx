@@ -39,7 +39,7 @@ function StandingsDropdown(props: StandingsDropdownProps) {
                     <NavLink to="/results/races" className="block px-4 py-2 hover:bg-red-600 hover:text-white transition duration-200">Races</NavLink>
                     <NavLink to="/results/fastestlap" className="block px-4 py-2 hover:bg-red-600 hover:text-white transition duration-200">Fastest Laps</NavLink>
                     {results.races &&
-                        <NavLink to={'/results/races/' + results.races[results.races.length - 1].slug} className="block px-4 py-2 hover:bg-red-600 hover:text-white transition duration-200">Season</NavLink>
+                        <NavLink to={'/results/2020/' + results.races[results.races.length - 1].slug} className="block px-4 py-2 hover:bg-red-600 hover:text-white transition duration-200">Season</NavLink>
                     }
                 </div>
             }
@@ -49,9 +49,6 @@ function StandingsDropdown(props: StandingsDropdownProps) {
 }
 
 export default function TopBar() {
-    // const [isOpen, setIsOpen] = useState(false);
-    // const nodeRef = useRef(null);
-
     const results = useContext(AppContext);
 
     const [isMobileMenu, setIsMobileMenu] = useState(false);
@@ -84,7 +81,7 @@ export default function TopBar() {
                     <NavLink to="/results/races" className="block px-6 py-2 hover:bg-red-600 hover:text-white transition duration-200">Races</NavLink>
                     <NavLink to="/results/fastestlap" className="block px-6 py-2 hover:bg-red-600 hover:text-white transition duration-200">Fastest Laps</NavLink>
                     {results &&
-                        <NavLink to={'/results/races/' + results.races[results.races.length - 1].slug} className="block px-6 py-2 hover:bg-red-600 hover:text-white transition duration-200">Season</NavLink>
+                        <NavLink to={'/results/2020/' + results.races[results.races.length - 1].slug} className="block px-6 py-2 hover:bg-red-600 hover:text-white transition duration-200">Season</NavLink>
                     }
                 </div>}
             </div>

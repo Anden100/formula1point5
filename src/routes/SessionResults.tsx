@@ -80,17 +80,17 @@ export default function SessionResults(props: RouteComponentProps<TParams>) {
 
     return (
         <Card className="lg:px-8 pt-4">
-            <div className="flex flex-col">
-                <Select className='m-2' value={year} onChange={onChangeYear}>
+            <div className="flex flex-col md:flex-row">
+                <Select className='m-2 flex-1' value={year} onChange={onChangeYear}>
                     <option>2020</option>
                     <option>2019</option>
                 </Select>
-                <Select className='m-2' value={slug} onChange={onChangeRace}>
+                <Select className='m-2 flex-1' value={slug} onChange={onChangeRace}>
                     {results.races.map(race => (
                         <option key={race.slug} value={race.slug}>{race.name}</option>
                     ))}
                 </Select>
-                <Select className='m-2' value={'/' + session} onChange={onChangeSession}>
+                <Select className='m-2 flex-1' value={'/' + session} onChange={onChangeSession}>
                     {links.map(s => (
                         <option key={s.href} value={s.href}>{s.session}</option>
                     ))}
