@@ -23,8 +23,8 @@ function App() {
                                 <Route exact path='/results/drivers' component={DriverStandings} />
                                 <Route path='/results/constructors' component={ConstructorStandings} />
                                 <Route exact path='/results/races' component={Races} />
-                                <Route path='/results/races/:slug/:session' component={SessionResults} />
-                                <Route path='/results/races/:slug' component={SessionResults} />
+                                <Route path='/results/:year/:slug/:session' component={SessionResults} />
+                                <Route path='/results/:year/:slug' component={SessionResults} />
                                 <Route exact path='/results/fastestlap' component={FastestLaps} />
                                 <Route path='/results/drivers/:slug' component={DriverResults} />
                             </Switch>

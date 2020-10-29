@@ -3,7 +3,7 @@ import { FastestLap, Practice, Qualifying, RaceResult } from '../types/types';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from './Table';
 
 interface RaceResultsTableProps {
-    year: number;
+    year: string;
     name: string;
     className?: string;
     results: RaceResult[];
@@ -47,7 +47,7 @@ export function RaceResultsTable(props: RaceResultsTableProps) {
 
 interface FastestLapTableProps {
     className?: string;
-    year: number;
+    year: string;
     name: string;
     laps: FastestLap[];
 }
@@ -90,7 +90,7 @@ export function FastestLapTable(props: FastestLapTableProps) {
 
 interface QualifyingTableProps {
     className?: string;
-    year: number;
+    year: string;
     name: string;
     laps: Qualifying[];
 }
@@ -135,7 +135,7 @@ export function QualifyingTable(props: QualifyingTableProps) {
 
 interface PracticeResultsTableProps {
     className?: string;
-    year: number;
+    year: string;
     name: string;
     session: string;
     results: Practice[];

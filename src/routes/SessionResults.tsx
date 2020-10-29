@@ -11,21 +11,24 @@ import { Season } from '../types/types';
 interface TParams {
     slug: string;
     session: string;
+    year: string;
 }
 
 export default function SessionResults(props: RouteComponentProps<TParams>) {
     const history = useHistory();
     const currentSeasonResults = useContext(AppContext);
     const [results, setResults] = useState<Season | undefined>(undefined);
-    const [year, setYear] = useState(2020);
-    
+    const year = props.match.params.year;
+    const session = props.match.params.session;
+    const slug = props.match.params.slug;
+
     useEffect(() => {
-        const onMount = async (year: number) => {
+        const onMount = async (year: string) => {
             const res = await fetch(`https://raw.githubusercontent.com/Anden100/formula1point5/master/dump/data/${year}.json`);
             const data = await res.json();
             setResults(data);
         }
-        if (year === 2020) {
+        if (year === '2020') {
             setResults(currentSeasonResults);
         }
         else {
@@ -35,11 +38,9 @@ export default function SessionResults(props: RouteComponentProps<TParams>) {
 
     if (!results) return null;
 
-    const slug = props.match.params.slug;
     const race = results.races ? results.races.find(race => race.slug === slug) : null;
-    const session = props.match.params.session;
 
-    const links: {session: string; href: string}[] = [];
+    const links: { session: string; href: string }[] = [];
     const sessions = [
         { key: 'race_results', session: 'Race Results', href: '/raceresults', component: RaceResultsTable },
         { key: 'fastest_laps', session: 'Fastest Laps', href: '/fastestlaps', component: FastestLapTable },
@@ -56,7 +57,6 @@ export default function SessionResults(props: RouteComponentProps<TParams>) {
                     links.push({
                         session: s.session,
                         href: s.href,
-                        // component: s.component
                     })
                 }
             });
@@ -65,20 +65,18 @@ export default function SessionResults(props: RouteComponentProps<TParams>) {
 
     const onChangeRace = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const race = e.target.value;
-        history.push('/results/races/' + race + '/' + session);
+        history.push('/results/' + year + '/' + race + '/' + session);
     }
-    
+
     const onChangeSession = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const session = e.target.value;
-        history.push('/results/races/' + slug + session);
+        history.push('/results/' + year + '/' + slug + session);
     }
 
     const onChangeYear = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setYear(Number(e.target.value));
+        const year = e.target.value;
+        history.push('/results/' + year + '/' + slug + '/' + session);
     }
-
-    console.log(session);
-    console.log(links);
 
     return (
         <Card className="lg:px-8 pt-4">
@@ -100,25 +98,25 @@ export default function SessionResults(props: RouteComponentProps<TParams>) {
             </div>
             {race && <div className="flex-1 mt-4">
                 <Switch>
-                    <Route exact path={'/results/races/' + race.slug}>
-                        { race && <Redirect to={'/results/races/' + race.slug + links[0].href} /> }
+                    <Route exact path={'/results/' + year + '/' + race.slug}>
+                        {race && <Redirect to={'/results/' + year + '/' + race.slug + links[0].href} />}
                     </Route>
-                    <Route exact path={'/results/races/' + race.slug + '/raceresults'}>
+                    <Route exact path={'/results/' + year + '/' + race.slug + '/raceresults'}>
                         <RaceResultsTable name={race.name} year={year} results={race.results.race_results!} />
                     </Route>
-                    <Route exact path={'/results/races/' + race.slug + '/fastestlaps'}>
+                    <Route exact path={'/results/' + year + '/' + race.slug + '/fastestlaps'}>
                         <FastestLapTable name={race.name} year={year} laps={race.results.fastest_laps!} />
                     </Route>
-                    <Route exact path={'/results/races/' + race.slug + '/qualifying'}>
+                    <Route exact path={'/results/' + year + '/' + race.slug + '/qualifying'}>
                         <QualifyingTable name={race.name} year={year} laps={race.results.qualifying!} />
                     </Route>
-                    <Route exact path={'/results/races/' + race.slug + '/practice1'}>
+                    <Route exact path={'/results/' + year + '/' + race.slug + '/practice1'}>
                         <PracticeResultsTable name={race.name} year={year} session={'Practice 1'} results={race.results.practice1!} />
                     </Route>
-                    <Route exact path={'/results/races/' + race.slug + '/practice2'}>
+                    <Route exact path={'/results/' + year + '/' + race.slug + '/practice2'}>
                         <PracticeResultsTable name={race.name} year={year} session={'Practice 2'} results={race.results.practice2!} />
                     </Route>
-                    <Route exact path={'/results/races/' + race.slug + '/practice3'}>
+                    <Route exact path={'/results/' + year + '/' + race.slug + '/practice3'}>
                         <PracticeResultsTable name={race.name} year={year} session={'Practice 3'} results={race.results.practice3!} />
                     </Route>
                 </Switch>
