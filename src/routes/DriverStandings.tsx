@@ -14,7 +14,7 @@ export default function DriverStandings() {
         <Card>
             <h2 className="px-4 md:px-6 text-xl md:text-2xl">2020 Driver Standings</h2>
             <div className="mt-2 sm:px-4 md:px-6">
-                <DriverStandingsTable results={results} />
+                <DriverStandingsTable drivers={results.drivers} />
             </div>
         </Card>
     )

@@ -1,22 +1,26 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Redirect, Route, RouteComponentProps, Switch, useHistory } from 'react-router-dom';
 import { RaceResultsTable, FastestLapTable, QualifyingTable, PracticeResultsTable } from '../components/ResultsTables';
 import Card from '../components/Card';
 import Select from '../components/Select';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { Season } from '../types/types';
 
-export default function SessionResults(props) {
+interface TParams {
+    slug: string;
+    session: string;
+}
+
+export default function SessionResults(props: RouteComponentProps<TParams>) {
     const history = useHistory();
     const currentSeasonResults = useContext(AppContext);
-    const [results, setResults] = useState({});
+    const [results, setResults] = useState<Season | undefined>(undefined);
     const [year, setYear] = useState(2020);
     
-    // const [seasons, setSeasons] = useState([]);
-    
     useEffect(() => {
-        const onMount = async (year) => {
+        const onMount = async (year: number) => {
             const res = await fetch(`https://raw.githubusercontent.com/Anden100/formula1point5/master/dump/data/${year}.json`);
             const data = await res.json();
             setResults(data);
@@ -29,15 +33,13 @@ export default function SessionResults(props) {
         }
     }, [year, currentSeasonResults]);
 
-    if (!results.races) {
-        return null;
-    }
+    if (!results) return null;
 
     const slug = props.match.params.slug;
     const race = results.races ? results.races.find(race => race.slug === slug) : null;
     const session = props.match.params.session;
 
-    const links = [];
+    const links: {session: string; href: string}[] = [];
     const sessions = [
         { key: 'race_results', session: 'Race Results', href: '/raceresults', component: RaceResultsTable },
         { key: 'fastest_laps', session: 'Fastest Laps', href: '/fastestlaps', component: FastestLapTable },
@@ -54,24 +56,24 @@ export default function SessionResults(props) {
                     links.push({
                         session: s.session,
                         href: s.href,
-                        component: s.component
+                        // component: s.component
                     })
                 }
             });
         }
     }
 
-    const onChangeRace = e => {
+    const onChangeRace = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const race = e.target.value;
         history.push('/results/races/' + race + '/' + session);
     }
     
-    const onChangeSession = e => {
+    const onChangeSession = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const session = e.target.value;
         history.push('/results/races/' + slug + session);
     }
 
-    const onChangeYear = e => {
+    const onChangeYear = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setYear(Number(e.target.value));
     }
 
@@ -102,22 +104,22 @@ export default function SessionResults(props) {
                         { race && <Redirect to={'/results/races/' + race.slug + links[0].href} /> }
                     </Route>
                     <Route exact path={'/results/races/' + race.slug + '/raceresults'}>
-                        <RaceResultsTable name={race.name} year={year} results={race.results.race_results} />
+                        <RaceResultsTable name={race.name} year={year} results={race.results.race_results!} />
                     </Route>
                     <Route exact path={'/results/races/' + race.slug + '/fastestlaps'}>
-                        <FastestLapTable name={race.name} year={year} laps={race.results.fastest_laps} />
+                        <FastestLapTable name={race.name} year={year} laps={race.results.fastest_laps!} />
                     </Route>
                     <Route exact path={'/results/races/' + race.slug + '/qualifying'}>
-                        <QualifyingTable name={race.name} year={year} laps={race.results.qualifying} />
+                        <QualifyingTable name={race.name} year={year} laps={race.results.qualifying!} />
                     </Route>
                     <Route exact path={'/results/races/' + race.slug + '/practice1'}>
-                        <PracticeResultsTable name={race.name} year={year} session={'Practice 1'} results={race.results.practice1} />
+                        <PracticeResultsTable name={race.name} year={year} session={'Practice 1'} results={race.results.practice1!} />
                     </Route>
                     <Route exact path={'/results/races/' + race.slug + '/practice2'}>
-                        <PracticeResultsTable name={race.name} year={year} session={'Practice 2'} results={race.results.practice2} />
+                        <PracticeResultsTable name={race.name} year={year} session={'Practice 2'} results={race.results.practice2!} />
                     </Route>
                     <Route exact path={'/results/races/' + race.slug + '/practice3'}>
-                        <PracticeResultsTable name={race.name} year={year} session={'Practice 3'} results={race.results.practice3} />
+                        <PracticeResultsTable name={race.name} year={year} session={'Practice 3'} results={race.results.practice3!} />
                     </Route>
                 </Switch>
             </div>}

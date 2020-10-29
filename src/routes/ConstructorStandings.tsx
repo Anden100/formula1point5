@@ -6,11 +6,14 @@ import ConstructorStandingsTable from '../components/ConstructorStandingsTable';
 export default function ConstructurStandings() {
     const results = useContext(AppContext);
 
+    if (!results) {
+        return null;
+    }
     return (
         <Card>
             <h2 className="px-4 md:px-6 text-xl md:text-2xl">2020 Constructor Standings</h2>
             <div className="mt-2 sm:px-4 md:px-6">
-                <ConstructorStandingsTable results={results} />
+                <ConstructorStandingsTable constructors={results.constructors} />
             </div>
         </Card>
     )

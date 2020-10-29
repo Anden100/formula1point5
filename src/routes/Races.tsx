@@ -7,6 +7,8 @@ import Card from '../components/Card';
 export default function RaceResults() {
     const results = useContext(AppContext);
 
+    if (!results) return null;
+
     return (
         <Card>
             <h2 className="px-4 md:px-6 text-xl md:text-2xl">2020 Race Results</h2>

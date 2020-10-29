@@ -1,8 +1,13 @@
 import React from 'react';
-import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '../components/Table';
+import { Constructor } from '../types/types';
+import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from './Table';
 
-export default function DriverStandingsTable(props) {
-    if (!props.results.constructors) return null;
+interface DriverStandingsTableProps {
+    constructors: Constructor[];
+}
+
+export default function DriverStandingsTable(props: DriverStandingsTableProps) {
+    if (!props.constructors) return null;
 
     return (
         <Table className="mt-4">
@@ -12,7 +17,7 @@ export default function DriverStandingsTable(props) {
                 <TableHeader className='text-right pr-4'>Points</TableHeader>
             </TableHead>
             <TableBody>
-                {props.results.constructors.map(s => (
+                {props.constructors.map(s => (
                     <TableRow key={s.position}>
                         <TableCell>
                             {s.position}

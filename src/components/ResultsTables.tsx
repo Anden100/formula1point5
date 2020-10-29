@@ -1,7 +1,15 @@
 import React from 'react';
+import { FastestLap, Practice, Qualifying, RaceResult } from '../types/types';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from './Table';
 
-export function RaceResultsTable(props) {
+interface RaceResultsTableProps {
+    year: number;
+    name: string;
+    className?: string;
+    results: RaceResult[];
+}
+
+export function RaceResultsTable(props: RaceResultsTableProps) {
     return (
         <div className={'flex-1 ' + props.className}>
             <h2 className="text-xl mx-6 lg:mx-0 md:text-2xl">{props.year + ' ' + props.name + ' - Race Results'}</h2>
@@ -37,8 +45,14 @@ export function RaceResultsTable(props) {
     )
 }
 
+interface FastestLapTableProps {
+    className?: string;
+    year: number;
+    name: string;
+    laps: FastestLap[];
+}
 
-export function FastestLapTable(props) {
+export function FastestLapTable(props: FastestLapTableProps) {
     return (
         <div className={'flex-1 ' + props.className}>
             <h2 className="text-xl mx-6 lg:mx-0 md:text-2xl">{props.year + ' ' + props.name + ' - Fastest Laps'}</h2>
@@ -74,7 +88,14 @@ export function FastestLapTable(props) {
     )
 }
 
-export function QualifyingTable(props) {
+interface QualifyingTableProps {
+    className?: string;
+    year: number;
+    name: string;
+    laps: Qualifying[];
+}
+
+export function QualifyingTable(props: QualifyingTableProps) {
     return (
         <div className={'flex-1 ' + props.className}>
             <h2 className="text-xl mx-6 lg:mx-0 md:text-2xl">{props.year + ' ' + props.name + ' - Qualifying'}</h2>
@@ -112,8 +133,15 @@ export function QualifyingTable(props) {
     )
 }
 
+interface PracticeResultsTableProps {
+    className?: string;
+    year: number;
+    name: string;
+    session: string;
+    results: Practice[];
+}
 
-export function PracticeResultsTable(props) {
+export function PracticeResultsTable(props: PracticeResultsTableProps) {
     return (
         <div className={'flex-1 ' + props.className}>
             <h2 className="text-xl mx-6 lg:mx-0 md:text-2xl">{props.year + ' ' + props.name + ' - ' + props.session}</h2>

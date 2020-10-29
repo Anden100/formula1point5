@@ -1,10 +1,15 @@
 import React, { createContext, useState } from 'react';
 import { useEffect } from 'react';
+import { Season } from '../types/types';
 
-export const AppContext = createContext();
+export const AppContext = createContext({} as Season | undefined);
 
-export const AppProvider = ({children}) => {
-    const [results, setResults] = useState({});
+interface AppProviderProps {
+    children: React.ReactNode;
+}
+
+export const AppProvider = (props: AppProviderProps) => {
+    const [results, setResults] = useState<Season | undefined>(undefined);
 
     useEffect(() => {
         async function fetchData() {
@@ -21,7 +26,7 @@ export const AppProvider = ({children}) => {
 
     return (
         <Provider value={ results }>
-            { children }
+            { props.children }
         </Provider>
     )
 }

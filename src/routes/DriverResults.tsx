@@ -1,28 +1,33 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import Card from '../components/Card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/Table';
 import { AppContext } from '../context/AppContext';
+import { Driver } from '../types/types';
 
-export default function DriverResults(props) {
-    const [results, setResults] = useState(null);
-    const context = useContext(AppContext);
-    
-    useEffect(() => {
-        async function fetchData() {
-            const r = await context(2020);
-            setResults(r);
-        }
-        fetchData();
-    }, [context]);
+type TParams = { slug: string; }
 
+interface RaceResult {
+    name: string;
+    date: string;
+    slug: string;
+    driver: Driver;
+    points: number;
+    pos: number;
+}
+
+export default function DriverResults(props: RouteComponentProps<TParams>) {
+    const results = useContext(AppContext);
     if (!results) {
         return null;
     }
 
     const driver = results.drivers ? results.drivers.find(driver => driver.slug === props.match.params.slug) : null;
+    if (!driver) {
+        return null;
+    }
 
-    const raceResults = [];
+    const raceResults: RaceResult[] = [];
     if (results.races) {
         results.races.forEach(race => {
             if (race.results.race_results) {
